@@ -1,0 +1,104 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Test
+  description: Restful api 
+servers:
+  - url: "http://localhost:3000/"
+paths:
+  /currencyPairs:
+    get:
+      tags:
+        - currency
+      summary: 통화 key, value
+      responses:
+        "200":
+          description: currencyPairs
+          content:
+            application/json:
+              schema:
+                  type: array 
+                  example: [ "bcc_eth","etc_btc","dbc_neo","eth_btc" ]
+  /withdrawConfigs:
+    get:
+      tags:
+       - withdraw
+      summary: withdraw configs
+      parameters:
+        - name: assetCode
+          in: query
+          description: assetCode
+          required: false
+          type: string
+      responses:
+        "200":
+          description: withdraw config
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  amountScale:
+                    type: integer
+                    required: true
+                  chain:
+                    type: integer
+                    required: true
+                  assetCode:
+                    typs: string
+                    required: true
+                  min:
+                    typs: number
+                    required: true
+                  transferAmtScale:
+                    typs: integer
+                    required: true
+                  canWithDraw:
+                    typs: boolean
+                    required: true
+                  fee:
+                    typs: number
+                    required: true
+                  minTransfer:
+                    typs: number
+                    required: true
+                  type:
+                    typs: integer
+                example: {"amountScale":4,"chain":"heco","assetCode":"lbk","min":200,"transferAmtScale":4,"canWithDraw":true,"fee":100,"minTransfer":0.0001,"type":"1"}
+  /24hr/{symbol}:
+    get:
+      tags:
+       - hr
+      summary: 24hr
+      parameters:
+        - name: symbol
+          in: path
+          description: eth_btc, zec_btc, all
+          required: true
+          type: string
+      responses:
+        "200":
+          description: withdraw config
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  symbol:
+                    type: string
+                    required: true
+                  ticker:
+                    type: object
+                    required: true
+                    properties:
+                      high: 
+                        type: number
+                        vol: number
+                        low: number
+                        change: number
+                        turnover: number
+                        latest: number
+                  timestamp:
+                    typs: integer
+                    required: true
+                example: { "symbol":" lilfloki_usdt", "ticker":{"high": 0.000000000374,"vol": 211361565780866.3625, "low": 0.000000000293,"change": -7.08,"turnover": 72227.8652,"latest": 0.000000000328},"timestamp":1663946398691}

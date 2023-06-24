@@ -1,4 +1,4 @@
-import { Controller, Get, Put, Post } from "@nestjs/common";
+import { Controller, Get, Put, Post, Delete } from "@nestjs/common";
 import { Param, Body } from "@nestjs/common";
 import { UserService } from "./app.service";
 import { ApiTags, ApiOperation, ApiCreatedResponse, ApiBody } from "@nestjs/swagger";
@@ -62,5 +62,17 @@ export class UserController {
     })
     async modifyUser(@Param("id") id: string, @Body() dto: UserInfoDTO) {
         return this.userService.modifyUser(id, dto);
+    }
+
+    @Delete("/:id")
+    @ApiOperation({
+        summary: "특정 사용자 정보 제거",
+        description: "id에 해당하는 사용자 정보를 제거 대상자에 추가"
+    })
+    @ApiCreatedResponse({
+        description: "삭제 성공 204"
+    })
+    async destroyUser(@Param("id") id: string) {
+        return this.userService.destroyUser(id);
     }
 }

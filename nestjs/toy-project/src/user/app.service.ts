@@ -59,7 +59,7 @@ export class UserService {
         });
     }
 
-    modifyUser(id: string, dto: UserInfoDTO) {
+    modifyUser(id: string, dto: UserInfoDTO): Promise<string> {
         return new Promise((resolve, reject) => {
             const user = USER_TABLE[id];
             if (isUndefined(user)) {
@@ -73,7 +73,20 @@ export class UserService {
                     ...dto
                 }
             };
-            resolve("ok")
+            resolve("ok");
+        });
+    }
+
+    destroyUser(id: string): Promise<string> {
+        return new Promise((resolve, reject) => {
+            const user = USER_TABLE[id];
+            if (isUndefined(user)) {
+                reject(new Error(`user ${id} not found`));
+                return
+            }
+            
+            delete USER_TABLE[id];
+            resolve("ok");
         });
     }
 }

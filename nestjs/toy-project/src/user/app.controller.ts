@@ -1,8 +1,8 @@
-import { Controller, Get, Param, Body, Post } from "@nestjs/common";
+import { Controller, Get, Put, Post } from "@nestjs/common";
+import { Param, Body } from "@nestjs/common";
 import { UserService } from "./app.service";
-import { User } from "./model/User.interface";
 import { ApiTags, ApiOperation, ApiCreatedResponse, ApiBody } from "@nestjs/swagger";
-import { UserDTO } from "./model/UserDTO";
+import { UserDTO, UserInfoDTO } from "./model/UserDTO";
 
 @Controller("/users")
 @ApiTags("User")
@@ -17,7 +17,7 @@ export class UserController {
         description: "모든 사용자의 정보 조회",
         type: [UserDTO]
     })
-    async listUser(): Promise<User[]> {
+    async listUser(): Promise<UserDTO[]> {
         return this.userService.listUser()
     }
 
@@ -45,7 +45,22 @@ export class UserController {
         description: "id에 해당하는 사용자 정보가 없으면 Error",
         type: UserDTO
     })
-    async getUser(@Param("id") id: string): Promise<User> {
+    async getUser(@Param("id") id: string): Promise<UserDTO> {
         return this.userService.getUser(id);
+    }
+
+    @Put("/:id")
+    @ApiOperation({
+        summary: "특정 사용자 정보 수정",
+        description: "id에 해당하는 사용자 정보를 수정"
+    })
+    @ApiBody({
+        type: UserInfoDTO
+    })
+    @ApiCreatedResponse({
+        description: "id에 해당하는 사용자 정보가 없으면 Error"
+    })
+    async modifyUser(@Param("id") id: string, @Body() dto: UserInfoDTO) {
+        return this.userService.modifyUser(id, dto);
     }
 }

@@ -1,16 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger"; 
 import { GRADE, JOB } from "./Protocol";
-export class UserDTO {
+import { User, UserInfo } from "./UserInterface";
 
-    @ApiProperty({
-        required: true,
-        minLength: 6,
-        maxLength: 15,
-        default: "ywyi1992"
-    })    
-    public id: string;
-    
-
+class UserInfoDTO implements UserInfo {
     @ApiProperty({
         required: true,
         default: "cat"
@@ -27,7 +19,7 @@ export class UserDTO {
         required: true,
         default: "ywyi1992@gmail.com"
     })
-    public gmail: string;
+    public email: string;
 
     @ApiProperty({
         required: true,
@@ -41,4 +33,26 @@ export class UserDTO {
         enum: { ...JOB }
     })
     public job: JOB;
+}
+
+class UserDTO implements User {
+    @ApiProperty({
+        required: true,
+        minLength: 6,
+        maxLength: 15,
+        default: "ywyi1992"
+    })    
+    public id: string;
+    
+    @ApiProperty({
+        type: UserInfoDTO
+    })
+    public info: UserInfo;
+    
+}
+
+
+export {
+    UserDTO,
+    UserInfoDTO
 }

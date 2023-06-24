@@ -10,6 +10,7 @@ type UserInfoType = {
 const USER_TABLE: UserInfoType = {
     "ywyi1992": { 
         id: "ywyi1992",
+        password: "123",
         info: {
             nickName: "cat",
             age: 32,
@@ -21,7 +22,7 @@ const USER_TABLE: UserInfoType = {
 };
 
 @Injectable()
-export class UserService {
+class UserService {
     
     listUser(): Promise<UserDTO[]> {
         return new Promise((resolve, reject) => {
@@ -69,6 +70,7 @@ export class UserService {
 
             USER_TABLE[id] = {
                 id,
+                password: user.password,
                 info: {
                     ...dto
                 }
@@ -89,4 +91,10 @@ export class UserService {
             resolve("ok");
         });
     }
+}
+
+
+export {
+    UserService,
+    USER_TABLE
 }

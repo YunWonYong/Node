@@ -44,6 +44,8 @@ class UserDTO implements User {
     })    
     public id: string;
     
+    public password: string;
+    
     @ApiProperty({
         type: UserInfoDTO
     })

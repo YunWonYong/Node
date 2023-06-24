@@ -3,16 +3,20 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { UserController } from "./user/app.controller";
 import { UserService } from "./user/app.service";
+import { LoginService } from "./login/app.service";
+import { LoginController } from "./login/app.controller";
 
 @Module({
     imports: [],
     controllers: [
         AppController,
-        UserController
+        UserController,
+        LoginController,
     ],
     providers: [
         AppService,
-        UserService
+        UserService,
+        LoginService,
     ],
 })
 export class AppModule {}

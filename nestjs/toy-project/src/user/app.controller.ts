@@ -30,7 +30,7 @@ export class UserController {
         type: UserDTO       
     })
     @ApiCreatedResponse({
-        description: "성공 201, 중복 204, 실패 500"
+        description: "성공 201, 중복 205, 실패 500"
     })
     async registerUser(@Body() dto: UserDTO) {
         return this.userService.registerUser(dto);

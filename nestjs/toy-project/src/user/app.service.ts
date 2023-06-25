@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { hasValue, isUndefined } from "src/util/Error";
+import { DuplicateException, EmptyException, NotFoundException, hasValue, isUndefined } from "src/util/Error";
 import { UserDTO, UserInfoDTO } from "./model/UserDTO";
 import { GRADE, JOB } from "./model/Protocol";
 
@@ -31,21 +31,21 @@ class UserService {
                 return
             }
             
-            reject(new Error("user empty"));
+            reject(new EmptyException("user list"));
         });      
     }
 
     registerUser(dto: UserDTO): Promise<string> {
     return new Promise((resolve, reject) => {
             const { id } = dto;
-            const user = USER_TABLE[id];
-            if (hasValue(user)) {
-                reject(new Error(`user ${id} duplicated`));
-                return;
-            }
-
-            USER_TABLE[id] = dto;
-            resolve("ok");
+            this.getUser(id)
+                .then((user: UserDTO) => {
+                    reject(new DuplicateException(`${user.id}`));
+                })
+                .catch(() => {
+                    resolve("ok");
+                    USER_TABLE[id] = dto;
+                });
         });
     }
 
@@ -53,7 +53,7 @@ class UserService {
         return new Promise((resolve, reject) => {
             const user = USER_TABLE[id];
             if (isUndefined(user)) {
-                reject(new Error(`user ${id} not found`));
+                reject(new NotFoundException(`user ${id}`));
                 return;
             }
             resolve(user);
@@ -62,33 +62,30 @@ class UserService {
 
     modifyUser(id: string, dto: UserInfoDTO): Promise<string> {
         return new Promise((resolve, reject) => {
-            const user = USER_TABLE[id];
-            if (isUndefined(user)) {
-                reject(new Error(`user ${id} not found`));
-                return;
-            }
-
-            USER_TABLE[id] = {
-                id,
-                password: user.password,
-                info: {
-                    ...dto
-                }
-            };
-            resolve("ok");
+            this.getUser(id)
+                .then((user: UserDTO) => {
+                    USER_TABLE[id] = {
+                        id,
+                        password: user.password,
+                        info: {
+                            ...dto
+                        }
+                    };
+                    resolve("ok");
+                })
+                .catch(reject);
         });
     }
 
     destroyUser(id: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            const user = USER_TABLE[id];
-            if (isUndefined(user)) {
-                reject(new Error(`user ${id} not found`));
-                return
-            }
+            this.getUser(id)
+                .then((user: UserDTO) => {
+                    delete USER_TABLE[user.id];
+                    resolve("ok");
+                })
+                .catch(reject);
             
-            delete USER_TABLE[id];
-            resolve("ok");
         });
     }
 }

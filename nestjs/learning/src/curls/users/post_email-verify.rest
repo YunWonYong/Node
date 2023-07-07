@@ -1,0 +1,1 @@
+curl http://localhost:3000/users/email-verify?signupVerifyToken=test_token -X POST

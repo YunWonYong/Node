@@ -1,2 +1,8 @@
+## customPipe Error
 curl http://localhost:3000/users/userId \
  -X DELETE 
+
+###
+curl http://localhost:3000/users/1 \
+ -X DELETE 
+

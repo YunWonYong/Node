@@ -1,3 +1,10 @@
+## UserCreateDTOPipe Error
+curl http://localhost:3000/users \
+ -X POST \
+ -H "Content-Type: application/json" \ 
+ -d '{"name": "", "email": "ywyi1992@gmail.com", "password": "123"}'
+
+###
 curl http://localhost:3000/users \
  -X POST \
  -H "Content-Type: application/json" \ 

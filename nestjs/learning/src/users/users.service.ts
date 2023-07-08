@@ -8,6 +8,9 @@ export class UsersService {
 
     constructor(private readonly emailService: EmailService) {}
 
+    async findAll(offset: number, limit: number): Promise<UserInfo[]> {
+        return [];
+    }
     async createUser(name: string, email: string, password: string): Promise<void> {
         const checkFlag = await this.checkUserExists(email);
         console.log("user Exists", checkFlag);
@@ -42,11 +45,11 @@ export class UsersService {
         return email;
     }
 
-    async getUserInfo(userId: string): Promise<UserInfo> {
+    async getUserInfo(userId: number): Promise<UserInfo> {
         return new UserInfo();
     }
 
-    remove(id: string) {
+    async remove(id: number): Promise<string> {
         return `This action removes a #${id} user`;
     }
 }

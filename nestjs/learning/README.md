@@ -19,9 +19,23 @@
     <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
   <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+# Scope
+Controller와 Provider에 scope option을 설정하여 lifecycle를 지정하는 방법
+1. DEFAULT
+    > SingleTon instance이고 application 전체에 공유되며, application의 life cycle과 같다. application의 bootstrap 과정이 끝난 후 SingleTon instance들을 생성함. (multitenancy 방식)
+2. REQUEST
+    > 들어오는 요청마다 별도의 instance가 생성되고 요청의 처리가 끝나면 Garbage-collected 됨. (multi instance 방식)
+3. TRANSIENT
+    > '임시'라는 의미로, 이 scope를 지정한 instance는 공유되지 않고 해당 scope의 Provider를 필요한 Conponent들이 DI할 때 각각 새로 생성한 instance를 injection  
+
+# Custom Provider
+1. Nest Framework가 만들어주는 instance 또는 cache된 instance 대신 instance를 직접 생성하고 싶은 경우
+2. 여러 class가 의존관계에 있을 때 이미 존재하는 클래스를 재사용하고자 할 때
+3. 테스트를 위해 모의 버전으로 provider를 재정의하려는 경우
+<!-- 4. 종류    
+    1. ### ValueProvider
+        provide, useValue property를 사용하고  -->
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.

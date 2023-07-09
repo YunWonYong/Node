@@ -1,4 +1,4 @@
-import { Controller } from "@nestjs/common";
+import { Controller, Headers, NotFoundException } from "@nestjs/common";
 import { Body, Query, Param } from "@nestjs/common";
 import { Get, Post, Delete } from "@nestjs/common";
 import { ParseIntPipe, DefaultValuePipe } from "@nestjs/common";
@@ -9,10 +9,11 @@ import { UserLoginDTO } from "./dto/user-login.dto";
 import { UsersService } from "./users.service";
 import { UserInfo } from "./dto/user-info.dto";
 import { CustomValidationPipe } from "./pipe/validation.pipe";
+import { AuthService } from "src/auth/auth.service";
 
 @Controller("users")
 export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
+    constructor(private readonly usersService: UsersService, private readonly authService: AuthService) {}
 
     @Get()
     async findAll(
@@ -41,7 +42,13 @@ export class UsersController {
     }
 
     @Get("/:id")
-    async getUserInfo(@Param("id", new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE })) userId: number): Promise<UserInfo> {
+    async getUserInfo(@Headers() header, @Param("id") userId: string): Promise<UserInfo> {
+        const { authorization } = header;
+        if (authorization === "" || authorization === undefined) {
+            throw new NotFoundException("authorization not found");
+        }
+        const jwt = authorization.split("Bearer ")[1];
+        await this.authService.verify(jwt);
         return await this.usersService.getUserInfo(userId);
     }
 

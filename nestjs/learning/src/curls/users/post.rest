@@ -22,5 +22,5 @@ curl http://localhost:3000/users \
 curl http://localhost:3000/users \
  -X POST \
  -H "Content-Type: application/json" \ 
- -d '{"name": "wonyong.yun", "email": "ywyi1991@gmail.com", "password": "Union12#"}'
+ -d '{"name": "wonyong.yun", "email": "ywyi1995@gmail.com", "password": "Union12#"}'
  

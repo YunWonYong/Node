@@ -3,5 +3,6 @@
 curl http://localhost:3000/users/userId
 
 ###
-curl http://localhost:3000/users/1
+curl http://localhost:3000/users/b00d6a41-1e20-11ee-9f03-af8ab101581d \
+ -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBiMDI1M2MxLTFlMjEtMTFlZS04YjJmLTNmYmFmMTExNzEyNiIsIm5hbWUiOiJ3b255b25nLnl1biIsImVtYWlsIjoieXd5aTE5OTJAZ21haWwuY29tIiwiaWF0IjoxNjg4OTE1MTQ1LCJleHAiOjE2ODkwMDE1NDUsImF1ZCI6ImxvY2FsaG9zdCIsImlzcyI6Im5lc3RqcyBsZWFybmluZyJ9.tSjcNusFTJ62ed7AHpDsuNsYPtHw0PE-3iJ8nqc_L40'
 

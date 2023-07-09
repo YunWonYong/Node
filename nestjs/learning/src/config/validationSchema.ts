@@ -13,4 +13,6 @@ export const validationSchema = Joi.object({
     DB_USERNAME: Joi.string().required(),
     DB_PASSWORD: Joi.string().required(),
     DB_SYNCHRONIZE: Joi.boolean().required(),
+
+    AUTH_SECRET: Joi.string().required()
 });

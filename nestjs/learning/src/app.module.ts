@@ -5,7 +5,7 @@ import { ConfigModule } from './config/config.module';
 @Module({
   imports: [
     ConfigModule,
-    UsersModule,
-  ],
+    UsersModule
+  ]
 })
 export class AppModule {}

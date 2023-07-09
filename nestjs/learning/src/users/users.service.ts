@@ -1,10 +1,16 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, UnprocessableEntityException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 import { EmailService } from "src/email/email.service";
 import { v1 as uuidV1 } from "uuid";
 import { UserInfo } from "./dto/user-info.dto";
+import { Repository } from "typeorm";
+import { UserEntity } from "./entities/user.entity";
 
 @Injectable()
 export class UsersService {
+
+    @InjectRepository(UserEntity)
+    private readonly usersRepository: Repository<UserEntity>
 
     constructor(private readonly emailService: EmailService) {}
 
@@ -13,7 +19,10 @@ export class UsersService {
     }
     async createUser(name: string, email: string, password: string): Promise<void> {
         const checkFlag = await this.checkUserExists(email);
-        console.log("user Exists", checkFlag);
+
+        if (checkFlag) {
+            throw new UnprocessableEntityException("해당 이메일로는 가입할 수 없습니다.");
+        }
 
         const signupVerifyToken = uuidV1();
 
@@ -23,10 +32,25 @@ export class UsersService {
     }
 
     private async checkUserExists(email: string): Promise<boolean> {
-        return false;
+        const findOneResult = await this.usersRepository.findOne({
+            where: {
+                email
+            }
+        });
+
+        console.log("findOneResult", findOneResult);
+        return findOneResult instanceof UserEntity;
     }
 
-    private async saveUser(name: string, email: string, password: string, token: string): Promise<void> {
+    private async saveUser(name: string, email: string, password: string, signupVerifyToken: string): Promise<void> {
+        const userEntity = new UserEntity();
+        userEntity.id = uuidV1();
+        userEntity.name = name;
+        userEntity.email = email;
+        userEntity.password = password;
+        userEntity.signupVerifyToken = signupVerifyToken;
+        const saveResult = await this.usersRepository.save(userEntity);
+        console.log("user save", saveResult);
         return;
     }
 

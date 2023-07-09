@@ -8,7 +8,8 @@ import OrmModule from "./orm/orm.module";
         OrmModule
     ],
     exports: [
-        EmailModule
+        EmailModule,
+        OrmModule
     ]
 })
 export class ConfigModule {}

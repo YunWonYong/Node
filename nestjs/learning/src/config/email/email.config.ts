@@ -1,5 +1,6 @@
 import { registerAs } from "@nestjs/config";
 
+
 export default registerAs("email", () => {
     return {
         service: process.env.EMAIL_SERVICE,

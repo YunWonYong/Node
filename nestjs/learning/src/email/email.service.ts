@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import Mail, { Options } from "nodemailer/lib/mailer";
 import { createTransport } from "nodemailer";
-import emailConfig from "src/config/email.config";
+import emailConfig from "src/config/email/email.config";
 import { ConfigType } from "@nestjs/config";
 
 @Injectable()

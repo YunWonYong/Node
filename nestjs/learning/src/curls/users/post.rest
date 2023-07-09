@@ -2,10 +2,18 @@
 curl http://localhost:3000/users \
  -X POST \
  -H "Content-Type: application/json" \ 
- -d '{"name": "", "email": "ywyi1992@gmail.com", "password": "123"}'
+ -d '{"name": "jnijn", "email": "ywyi1992@gmail.com", "password": "pass123("}'
 
+###
+## NotIn custom decorator check
+curl http://localhost:3000/users \
+ -X POST \
+ -H "Content-Type: application/json" \ 
+ -d '{"name": "YOUR_NAME", "email": "ywyi1992@gmail.com", "password": "YOUR_NAME098("}'
+
+ 
 ###
 curl http://localhost:3000/users \
  -X POST \
  -H "Content-Type: application/json" \ 
- -d '{"name": "wonyong.yun", "email": "ywyi1992@gmail.com", "password": "123"}'
+ -d '{"name": "wonyong.yun", "email": "ywyi1992@gmail.com", "password": "Union12#"}'

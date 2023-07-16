@@ -1,5 +1,4 @@
 curl http://localhost:3000/users/login \
  -X POST \
  -H 'Content-Type: application/json' \
- -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIwMGQ2YTQxLTFlMjAtMTFlZS05ZjAzLWFmOGFiMTAxNTgxZCIsIm5hbWUiOiJ3b255b25nLnl1biIsImVtYWlsIjoieXd5aTE5OTJAZ21haWwuY29tIiwiaWF0IjoxNjg4OTE0MzYzLCJleHAiOjE2ODkwMDA3NjMsImF1ZCI6ImxvY2FsaG9zdCIsImlzcyI6Im5lc3RqcyBsZWFybmluZyJ9.vCIVSnAhybsD4EJnRYwo_CeBc65fgYgJqJUYCjadiuk'
  -d '{"email": "ywyi1992@gmail.com", "password": "Union12#"}'

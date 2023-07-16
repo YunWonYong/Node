@@ -2,7 +2,7 @@ import { Controller, Headers, NotFoundException } from "@nestjs/common";
 import { Body, Query, Param } from "@nestjs/common";
 import { Get, Post, Delete } from "@nestjs/common";
 import { ParseIntPipe, DefaultValuePipe } from "@nestjs/common";
-import { HttpStatus } from "@nestjs/common/enums";
+import { UseGuards } from "@nestjs/common";
 import { CreateUserDTO } from './dto/create-user.dto';
 import { VerifyEmailDTO } from "./dto/verify-email.dto";
 import { UserLoginDTO } from "./dto/user-login.dto";
@@ -10,6 +10,7 @@ import { UsersService } from "./users.service";
 import { UserInfo } from "./dto/user-info.dto";
 import { CustomValidationPipe } from "./pipe/validation.pipe";
 import { AuthService } from "src/auth/auth.service";
+import { AuthGuard } from "src/guard/authGuard";
 
 @Controller("users")
 export class UsersController {
@@ -42,6 +43,7 @@ export class UsersController {
     }
 
     @Get("/:id")
+    @UseGuards(AuthGuard)
     async getUserInfo(@Headers() header, @Param("id") userId: string): Promise<UserInfo> {
         const { authorization } = header;
         if (authorization === "" || authorization === undefined) {
@@ -53,6 +55,7 @@ export class UsersController {
     }
 
     @Delete("/:id")
+    @UseGuards(AuthGuard)
     async removeUser(@Param("id", CustomValidationPipe) userId: number): Promise<string> {
         return this.usersService.remove(userId);
     }

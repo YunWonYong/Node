@@ -3,7 +3,7 @@ import { ConfigType } from "@nestjs/config";
 import authConfig from "src/config/auth/auth.config";
 import * as jwt from "jsonwebtoken";
 
-interface User {
+export interface User {
     id: string;
     name: string
     email: string
@@ -22,13 +22,18 @@ export class AuthService {
         });
     }
 
-    verify(token: string): User {
-        const payload: jwt.JwtPayload = jwt.verify(token, this.config.secret) as jwt.JwtPayload;
-        const { id, email } = payload;
-        return {
-            id, 
-            email,
-            name: ""
-        };
+    verify(token: string): (User | null) {
+        try {
+            const payload: jwt.JwtPayload = jwt.verify(token, this.config.secret) as jwt.JwtPayload;
+            console.log("verify", payload);
+            const { id, email } = payload;
+            return {
+                id, 
+                email,
+                name: ""
+            };
+        } catch(e) {
+            return null;
+        }
     }
 }

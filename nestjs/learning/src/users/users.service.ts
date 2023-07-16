@@ -15,6 +15,7 @@ export class UsersService {
     constructor(private readonly emailService: EmailService, private readonly authService: AuthService) {}
 
     async findAll(offset: number, limit: number): Promise<UserInfo[]> {
+        console.log(offset, limit);
         return [];
     }
     async createUser(name: string, email: string, password: string): Promise<void> {

@@ -1,3 +1,4 @@
+import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 import { getSourceDirectoryPath } from "..";
 import { validationSchema } from "../validationSchema";
 import { ormENVInfo } from "./orm.config";
@@ -16,9 +17,13 @@ const ormOptions: TypeOrmModuleOptions = {
     synchronize: ormENVInfo.dbSynchronize,
     validateOptions: {
         validationSchema
-    }
+    },
 };
 
-const OrmModule = TypeOrmModule.forRoot(ormOptions); 
+// const OrmModule = TypeOrmModule.forRoot(ormOptions); 
 
+const OrmModule = TypeOrmModule.forRoot({
+    ...ormOptions,
+    namingStrategy: new SnakeNamingStrategy()
+});
 export default OrmModule;

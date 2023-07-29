@@ -19,7 +19,10 @@ class ProjectService {
 
     public list(): Promise<any> {
         return new Promise((resolve, reject) => {
-            resolve("z");   
+            this.repository
+                .find()
+                .then(resolve)
+                .catch(reject)
         });
     }
 
@@ -39,16 +42,10 @@ class ProjectService {
     }
 
     public categoryList(): Promise<ListResult> {
-        console.log("service 모야");
         return new Promise((resolve, rejects) => {
             this.categoryRepository
             .findAndCount()
             .then((result: [ProjectCategoryEntity[], number] ) => {
-                // resolve({``
-                //     list: entities,
-                //     total
-                // })
-                console.log(result);
                 const [list, total] = result;
                 resolve({
                     list,

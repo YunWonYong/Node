@@ -6,11 +6,6 @@ import { Get } from "@nestjs/common";
 @ControllerSwg("project")
 class ProjectController {
     constructor(private readonly service: ProjectService) {}
-    
-    @Get("category")
-    async categoryList() {
-        return await this.service.categoryList();
-    }
 
     @GetSwg({
         swagger: {
@@ -20,6 +15,11 @@ class ProjectController {
     })
     async list() {
         return this.service.list();
+    }
+    
+    @Get("category")
+    async categoryList() {
+        return await this.service.categoryList();
     }
 
     @GetSwg({

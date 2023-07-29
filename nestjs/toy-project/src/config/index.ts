@@ -12,7 +12,18 @@ export type SwaggerConfig = {
     path: string,
     version: string,
     server: string
-}
+};
+
+export type ORMConfig = {
+    type: string,
+    host: string,
+    port: number,
+    username: string,
+    password: string,
+    synchronize: string,
+    database: string,
+    entities: string[],
+};
 
 @Injectable()
 class ConfigService {
@@ -26,6 +37,10 @@ class ConfigService {
         return this.get("swagger");
     }
 
+    public getOrmConfig(): ORMConfig {
+        return this.get("orm");
+    }
+
     private get(id: string) {
         const config = this.config.get(id);
         if (config === undefined) {
@@ -35,4 +50,14 @@ class ConfigService {
     }
 }
 
+const getSourceDirectoryPath = () => {
+    const paths = __dirname.split("\\");
+    paths.pop();
+    return paths.join("\\");
+};
+
 export default ConfigService;
+
+export {
+    getSourceDirectoryPath
+}

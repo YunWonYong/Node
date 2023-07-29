@@ -5,7 +5,6 @@ import ConfigService from "./config";
 import SwaggerDocumentBuilder from "./common/swagger";
 
 (async () => {
-
     const nestFactory: INestApplication = await NestFactory.create(AppModule);
     
     const config = nestFactory.get(ConfigService);

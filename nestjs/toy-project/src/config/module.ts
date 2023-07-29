@@ -3,13 +3,15 @@ import { ConfigModule as cm } from "@nestjs/config";
 import ApplicationConfig from "./application";
 import ConfigService from ".";
 import SwaggerConfig from "./swagger";
+import ORMConfig from "./orm";
 
 const configModule = cm.forRoot({
     envFilePath: `${__dirname}/.env`,
     isGlobal: true,
     load: [
         ApplicationConfig,
-        SwaggerConfig
+        SwaggerConfig,
+        ORMConfig, // [TODO] 사용할 수 있는 방법 생각해보기
     ]
 });
 

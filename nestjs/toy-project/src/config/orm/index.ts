@@ -12,7 +12,7 @@ const ORMConfig = () => {
     const synchronize = process.env.DB_SYNCHRONIZE === "true";
     const database = process.env.DB_NAME || "";
     const entities = [
-        `${getSourceDirectoryPath()}\\**\\entity\\*.ts`,
+        `${getSourceDirectoryPath()}\\**\\entities\\*.ts`,
     ];
 
     const orm: TypeOrmModuleOptions = {

@@ -1,6 +1,7 @@
 import ORMConfig from "../../config/orm";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { SnakeNamingStrategy } from "typeorm-naming-strategies";
+import { Module } from "@nestjs/common";
 
 const getORMModule = () => {
     const config = ORMConfig();
@@ -10,6 +11,15 @@ const getORMModule = () => {
     });
 };
 
-export {
-    getORMModule
-};
+const ormModule = getORMModule();
+
+
+@Module({
+    imports: [
+        ormModule
+    ],
+    exports: [
+        ormModule
+    ]
+})
+export default class ORMModule {}

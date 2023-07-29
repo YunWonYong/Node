@@ -1,17 +1,13 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "./config/module";
 import ProjectModule from "./project/module";
-import { getORMModule } from "./common/orm";
+import ORMModule from "./common/orm";
 
 @Module({
     imports: [
         ConfigModule,
         ProjectModule,
-        getORMModule()
-    ],
-    controllers: [
-    ],
-    providers: [
+        ORMModule,
     ],
 })
 export class AppModule {}

@@ -2,11 +2,16 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { INestApplication } from "@nestjs/common";
 import SwaggerBuilder from "./common/swagger";
+import ConfigService from "./config";
 
 (async () => {
+
     const nestFactory: INestApplication = await NestFactory.create(AppModule);
     
-    SwaggerBuilder.defaultBuild(nestFactory);
+    const config = nestFactory.get(ConfigService);
 
-    await nestFactory.listen(3001);
+    SwaggerBuilder.defaultBuild(nestFactory);
+    
+    const appConfig = config.getAppConfig();
+    await nestFactory.listen(appConfig.port);
 })();

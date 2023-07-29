@@ -6,12 +6,24 @@ type AppConfig = {
     port: number
 };
 
+export type SwaggerConfig = {
+    title: string,
+    description: string,
+    path: string,
+    version: string,
+    server: string
+}
+
 @Injectable()
 class ConfigService {
     constructor(private readonly config: CS ) {}
 
     public getAppConfig(): AppConfig {
         return this.get("app"); 
+    }
+
+    public getSwaggerConfig(): SwaggerConfig {
+        return this.get("swagger");
     }
 
     private get(id: string) {

@@ -1,7 +1,8 @@
 import ProjectService from "./service";
-import { Param } from "@nestjs/common";
-import { ControllerSwg, GetSwg } from "src/config/swagger/decorators";
-import { Get } from "@nestjs/common";
+import { Param, Body } from "@nestjs/common";
+import { ControllerSwg, GetSwg } from "../decorators/swagger";
+import { Get, Post } from "@nestjs/common";
+import { ProjectCategoryDTO } from "./dto/ProjectCategory";
 
 @ControllerSwg("project")
 class ProjectController {
@@ -17,9 +18,20 @@ class ProjectController {
         return this.service.list();
     }
     
-    @Get("category")
+    @GetSwg({
+        path: "category",
+        swagger: {
+            summary: "프로젝트 카테고리 목록 조회",
+            desc: "생성된 프로젝트 카테고리 전체 조회"
+        }
+    })
     async categoryList() {
         return await this.service.categoryList();
+    }
+
+    @Post("category")
+    async categoryRegist(@Body() categoryDTO: ProjectCategoryDTO) {
+        return await this.service.categoryRegist(categoryDTO);
     }
 
     @GetSwg({

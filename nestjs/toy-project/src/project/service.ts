@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { ProjectEntity } from "./entities/project";
 import { ProjectCategoryEntity } from "./entities/projectCategory";
+import { ProjectCategoryDTO } from "./dto/ProjectCategory";
 
 type ListResult = {
     list: any[],
@@ -53,6 +54,21 @@ class ProjectService {
                 });
             })
             .catch(rejects)
+        });
+    }
+
+    public categoryRegist(categoryDTO: ProjectCategoryDTO): Promise<boolean> {
+        const entity = new ProjectCategoryEntity();
+        entity.categoryCode = categoryDTO.categoryCode;
+        entity.categoryName = categoryDTO.categoryName;
+        entity.registUser = categoryDTO.registUser;
+        return new Promise((resolve, reject) => {
+            this.categoryRepository
+                .save(entity)
+                .then((result) => {
+                    resolve(result.categoryCode === categoryDTO.categoryCode);
+                })
+                .catch(reject);
         });
     }
 }

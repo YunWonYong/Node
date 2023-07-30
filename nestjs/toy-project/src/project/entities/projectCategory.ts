@@ -1,24 +1,24 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity("project_category")
 export class ProjectCategoryEntity {
-    @PrimaryGeneratedColumn()
-    category_code: number;
+    @PrimaryColumn()
+    categoryCode: number;
     
     @Column()
-    category_name: string;
+    categoryName: string;
 
     @Column()
-    regist_user: string;
+    registUser: string;
 
     @Column()
-    regist_date: string;
+    registDate: string;
 
     @Column()
-    update_user: string;
+    updateUser: string;
 
     @Column()
-    update_date: string;
+    updateDate: string;
 
     @Column()
     yn: string;

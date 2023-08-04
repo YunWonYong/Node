@@ -1,9 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, ForbiddenException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { ProjectEntity } from "./entities/project";
 import { ProjectCategoryEntity } from "./entities/projectCategory";
-import { ProjectCategoryDTO } from "./dto/ProjectCategory";
+import { ProjectCategoryDTO } from "./dto/ProjectCategoryDTO";
 
 type ListResult = {
     list: any[],
@@ -57,18 +57,44 @@ class ProjectService {
         });
     }
 
-    public categoryRegist(categoryDTO: ProjectCategoryDTO): Promise<boolean> {
+    public categoryRegist(categoryDTO: ProjectCategoryDTO): Promise<string> {
         const entity = new ProjectCategoryEntity();
         entity.categoryCode = categoryDTO.categoryCode;
         entity.categoryName = categoryDTO.categoryName;
         entity.registUser = categoryDTO.registUser;
         return new Promise((resolve, reject) => {
-            this.categoryRepository
-                .save(entity)
-                .then((result) => {
-                    resolve(result.categoryCode === categoryDTO.categoryCode);
+            this.categoryCodeDuplicateCheck(categoryDTO.categoryCode)
+                .then(() => {
+                    this.categoryRepository
+                        .save(entity)
+                        .then((result) => {
+                            resolve(result.categoryCode === categoryDTO.categoryCode? "success": "fail");
+                        })
+                        .catch(reject);
                 })
-                .catch(reject);
+                .catch(reject)
+        });
+    }
+
+    public categoryCodeDuplicateCheck(code: number): Promise<void> {
+        return new Promise((resolve, reject) => {
+            try {
+                const option = {
+                    where: {
+                        categoryCode: code
+                    }
+                };
+                const categoryEntity = this.categoryRepository.findOne(option);
+                
+                if (categoryEntity !== null) {
+                    throw new ForbiddenException(`${code} duplicate`)
+                }
+
+                resolve();
+
+            } catch(e) {
+                reject(e);
+            }
         });
     }
 }

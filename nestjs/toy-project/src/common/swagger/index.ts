@@ -9,7 +9,7 @@ class SwaggerDocumentBuilder {
     }
 
     public build(app: INestApplication, env: string) {
-        // // [TODO] env가 live이면 어떻게....??
+        // [TODO] env가 live이면 어떻게....??
         const options = new DocumentBuilder()
                         .setTitle(this.config.title)
                         .setDescription(this.config.description)

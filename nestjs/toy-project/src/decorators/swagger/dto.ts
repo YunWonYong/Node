@@ -7,7 +7,7 @@ enum Type {
     STRING = "string",
     NUMBER_STRING = "n_s",
     DATE = "date",
-    DATE_STRING = "d_s"
+    DATE_STRING = "d_s",
 }
 
 const getTypeDecorator = (type: Type) => {

@@ -3,6 +3,7 @@ import { Param, Body } from "@nestjs/common";
 import { ControllerSwg, GetSwg } from "../decorators/swagger";
 import { ProjectCategoryDTO } from "./dto/ProjectCategoryDTO";
 import { PostSwg } from "src/decorators/swagger/post";
+import { ProjectRegistDTO } from "./dto/ProjectRegistDTO";
 
 @ControllerSwg("project")
 class ProjectController {
@@ -16,6 +17,23 @@ class ProjectController {
     })
     async list() {
         return this.service.list();
+    }
+
+    @PostSwg({
+        swagger: {
+            summary: "프로젝트 생성",
+            desc: "프로젝트를 생성함."
+        },
+        responseList: [
+            {
+                status: 2001
+            }
+        ]
+    })
+    async regist(@Body() dto: ProjectRegistDTO) {
+        return {
+            result: this.service.regist(dto)
+        };
     }
     
     @GetSwg({

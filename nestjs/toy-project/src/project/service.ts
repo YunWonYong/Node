@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { ProjectEntity } from "./entities/project";
 import { ProjectCategoryEntity } from "./entities/projectCategory";
 import { ProjectCategoryDTO } from "./dto/ProjectCategoryDTO";
+import { ProjectRegistDTO } from "./dto/ProjectRegistDTO";
 
 type ListResult = {
     list: any[],
@@ -24,6 +25,17 @@ class ProjectService {
                 .find()
                 .then(resolve)
                 .catch(reject)
+        });
+    }
+
+    public regist(dto: ProjectRegistDTO): Promise<string> {
+        return new Promise((resolve, reject) => {
+            try {
+                console.log(dto);
+                resolve("success");
+            } catch(e) {
+                reject(e);
+            }
         });
     }
 

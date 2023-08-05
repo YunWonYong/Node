@@ -1,11 +1,13 @@
 import { applyDecorators } from "@nestjs/common";
 import { ApiProperty, ApiPropertyOptions } from "@nestjs/swagger";
-import { IsNumber, IsString, IsNumberString, IsNotEmpty, } from "class-validator";
+import { IsNumber, IsString, IsNumberString, IsNotEmpty, IsDateString, IsDate, } from "class-validator";
 
 enum Type {
     NUMBER = "number",
     STRING = "string",
     NUMBER_STRING = "n_s",
+    DATE = "date",
+    DATE_STRING = "d_s"
 }
 
 const getTypeDecorator = (type: Type) => {
@@ -16,6 +18,10 @@ const getTypeDecorator = (type: Type) => {
             return IsString();
         case Type.NUMBER_STRING:
             return IsNumberString();
+        case Type.DATE:
+            return IsDate();
+        case Type.DATE_STRING:
+            return IsDateString();
         default:
             throw new Error(`not supported type ${type}`);
     }

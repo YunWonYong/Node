@@ -16,12 +16,6 @@ export class ProjectEntity {
     name: string;
 
     @Column()
-    company: string;
-
-    @Column()
-    companyAddress: string;
-
-    @Column()
     startDate: string;
 
     @Column()

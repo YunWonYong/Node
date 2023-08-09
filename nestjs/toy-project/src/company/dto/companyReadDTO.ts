@@ -48,11 +48,6 @@ class CompanyReadDTO implements DTOInteface {
         example: "031-702-8818"
     })
     companyTel: string;
-
-    // @TypeSwgDeco({
-
-    // })
-    // projectList:
 }
 
 export default CompanyReadDTO;

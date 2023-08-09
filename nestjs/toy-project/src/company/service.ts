@@ -2,11 +2,9 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CompanyEntity } from "./entities/company";
 import { Repository } from "typeorm";
-import CompanyRegistDTO from "./dto/companyRegistDTO";
-import { dtoToEntity, getCurrentDate } from "src/common/util";
-import CompanyReadDTO from "./dto/companyReadDTO";
-import CompanyModifyDTO from "./dto/companyModifyDTO";
+import { dtoToEntity, getCurrentDate, entityListToDTOList, entityToDTO } from "src/common/util";
 import { ModifyResultType, RegistResultType } from "src/common/types";
+import { CompanyRegistDTO, CompanyReadDTO, CompanyModifyDTO, CompanyListDTO } from "./dto";
 
 @Injectable()
 class CompanyService {
@@ -14,9 +12,17 @@ class CompanyService {
     @InjectRepository(CompanyEntity)
     private readonly repository: Repository<CompanyEntity>;
 
-    public list(): Promise<any> {
-        return new Promise((resolve) => {
-            resolve("");
+    public list(): Promise<CompanyListDTO[]> {
+        return new Promise((resolve, reject) => {
+            this.repository
+                .find()
+                .then((result: CompanyEntity[]) => {
+                    const copyDTO = new CompanyListDTO();
+                    copyDTO.companyLogo = "";
+                    copyDTO.companyName = "";
+                    copyDTO.companyNo = 0;
+                    resolve(entityListToDTOList(result, copyDTO));
+                }).catch(reject);
         });
     }
 
@@ -49,10 +55,22 @@ class CompanyService {
                 })
                 .then((entity: CompanyEntity | null) => {
                     if(entity === null) {
-                        reject(new NotFoundException(`companyNo(${companyNo}) not found`))
+                        reject(new NotFoundException(`companyNo(${companyNo}) not found`));
                         return;
                     }
-                    resolve(entity);
+                    let readDTO = new CompanyReadDTO();
+                    readDTO.companyName = "";
+                    readDTO.companyLogo = "";
+                    readDTO.companyAddress = "";
+                    readDTO.companyAddressDetail = "";
+                    readDTO.companyZipcode = 0;
+                    readDTO.companyTel = "";
+                    readDTO = entityToDTO(entity, readDTO);
+                    if (readDTO.companyName === "") {
+                        reject(new NotFoundException(`companyNo(${companyNo}) not found`));
+                        return;
+                    }
+                    resolve(readDTO);
                 })
                 .catch(reject)
         });

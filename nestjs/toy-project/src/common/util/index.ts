@@ -8,6 +8,18 @@ function dtoToEntity<F extends DTOInteface, T extends EntityInterface>(from: F, 
     return to;
 }
 
+function entityToDTO<F extends EntityInterface, T extends DTOInteface>(from: F, to: T): T {
+    Object.keys(to).forEach((key: string) => {
+        // [TODO] 다른 방법 찾아보기
+        eval(`to["${key}"] = from["${key}"];`);
+    });
+    return to;
+}
+
+function entityListToDTOList<F extends EntityInterface[], T extends DTOInteface>(from: F, to: T): T[] {
+    return from.map((entity: EntityInterface) => ({...entityToDTO(entity, to)}));
+}
+
 const getCurrentDate = (): string => {
     const date = new Date();
     return `${getYMD(date)} ${getH24MISS(date)}`;
@@ -45,5 +57,7 @@ const getH24MISS = (date: Date): string => {
 
 export {
     dtoToEntity,
-    getCurrentDate
+    entityToDTO,
+    getCurrentDate,
+    entityListToDTOList
 };

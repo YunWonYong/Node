@@ -1,9 +1,7 @@
 import { Body, Param } from "@nestjs/common";
 import { ControllerSwg, GetSwg, PostSwg, PutSwg } from "src/decorators/swagger";
 import CompanyService from "./service";
-import CompanyRegistDTO from "./dto/companyRegistDTO";
-import CompanyReadDTO from "./dto/companyReadDTO";
-import CompanyModifyDTO from "./dto/companyModifyDTO";
+import { CompanyRegistDTO, CompanyReadDTO, CompanyModifyDTO, CompanyListDTO } from "./dto";
 
 @ControllerSwg("company")
 class CompanyController {
@@ -13,7 +11,14 @@ class CompanyController {
         swagger: {
             summary: "회사 목록",
             desc: "회사 목록 조회"
-        }
+        },
+        responseList: [
+            {
+                status:200,
+                type: CompanyListDTO,
+                isArray: true
+            }
+        ]
     })
     async list() {
         return this.service.list();

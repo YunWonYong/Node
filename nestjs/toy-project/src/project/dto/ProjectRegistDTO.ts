@@ -1,6 +1,7 @@
+import { DTOInteface } from "src/common/interface";
 import { Type, TypeSwgDeco } from "src/decorators/swagger";
 
-export class ProjectRegistDTO {
+class ProjectRegistDTO implements DTOInteface {
     @TypeSwgDeco({
         type: Type.NUMBER,
         desc: "카테고리 코드",
@@ -53,3 +54,5 @@ export class ProjectRegistDTO {
     })
     registUser: string;
 }
+
+export default ProjectRegistDTO;

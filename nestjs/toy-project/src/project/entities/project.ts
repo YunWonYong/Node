@@ -1,16 +1,26 @@
 import { Column, Entity, OneToOne, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
 import { ProjectCategoryEntity } from "../../project_category/entities/projectCategory";
+import { CompanyEntity } from "src/company/entities/company";
+import { EntityGetterInterface, EntitySetterInterface } from "src/common/interface";
+import { ProjectListDTO } from "../dto";
 
 @Entity("project")
-export class ProjectEntity {
+export class ProjectEntity implements EntitySetterInterface, EntityGetterInterface {
     @PrimaryGeneratedColumn()
     no: number;
 
+    // [TODO] 중복 코드 제거 생각해보기
     @OneToOne(() => ProjectCategoryEntity)
     @JoinColumn({
         name: "category_code"
     })
-    categoryCode: number;
+    category: ProjectCategoryEntity;
+
+    @OneToOne(() => CompanyEntity)
+    @JoinColumn({
+        name: "company_no"
+    })
+    company: CompanyEntity;
 
     @Column()
     name: string;
@@ -32,4 +42,45 @@ export class ProjectEntity {
 
     @Column()
     registDate: string;
+
+    /* eslint-disable @typescript-eslint/no-unused-vars */
+    set(key: string, value: any) {
+        // [TODO] 개선할 방법 찾기
+        if (this.company === undefined) {
+            this.company = new CompanyEntity();
+        }
+
+        if (this.category === undefined) {
+            this.category = new ProjectCategoryEntity();
+        }
+
+        if (key.indexOf("company") > -1) {
+            eval("this.company[key] = value");
+        } else if (key.indexOf("category") > -1) {
+            eval("this.category[key] = value");
+        } else {
+            eval("this[key] = value");
+        }
+    }
+
+    get<T>(dto: T): T {
+        if (dto instanceof ProjectListDTO) {
+            dto.categoryName = this.category.categoryName;
+            dto.companyName = this.company.companyName;
+            dto.companyLogo = this.company.companyLogo;
+        }
+
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        Object.keys(dto as object).forEach(key => {
+            const value = eval("this[key]");
+            if (value === undefined) {
+                return;
+            } 
+            eval("dto[key] = this[key]");
+        })
+
+        return {
+            ...dto
+        };
+    }
 }

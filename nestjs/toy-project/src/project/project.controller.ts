@@ -2,7 +2,8 @@ import ProjectService from "./project.service";
 import { Param, Body } from "@nestjs/common";
 import { ControllerSwg, GetSwg } from "../decorators/swagger";
 import { PostSwg } from "src/decorators/swagger/post";
-import { ProjectRegistDTO } from "./dto/ProjectRegistDTO";
+import { ListResult, RegistResultType } from "src/common/types";
+import { ProjectListDTO, ProjectRegistDTO } from "./dto";
 
 @ControllerSwg("project")
 class ProjectController {
@@ -14,8 +15,8 @@ class ProjectController {
             desc: "생성된 프로젝트 전체 조회"
         }
     })
-    async list() {
-        return this.service.list();
+    async list(): Promise<ListResult<ProjectListDTO>> {
+        return await this.service.list();
     }
 
     @PostSwg({
@@ -25,15 +26,14 @@ class ProjectController {
         },
         responseList: [
             {
-                status: 2001
+                status: 201
             }
         ]
     })
-    async regist(@Body() dto: ProjectRegistDTO) {
-        return {
-            result: this.service.regist(dto)
-        };
+    async regist(@Body() dto: ProjectRegistDTO): Promise<RegistResultType<number>> {
+        return await this.service.regist(dto);
     }
+
     @GetSwg({
         path: ":start/:end",
         swagger: {

@@ -1,9 +1,17 @@
-import { DTOInteface, EntityInterface } from "../interface";
+import { DTOInteface, EntityGetterInterface, EntityInterface, EntitySetterInterface } from "../interface";
 
 function dtoToEntity<F extends DTOInteface, T extends EntityInterface>(from: F, to: T) {
     Object.keys(from).forEach((key: string) => {
         // [TODO] 다른 방법 찾아보기
         eval(`to["${key}"] = from["${key}"];`);
+    });
+    return to;
+}
+
+function dtoToSetterEntity<F extends DTOInteface, T extends EntitySetterInterface>(from: F, to: T) {
+    Object.keys(from).forEach((key: string) => {
+        // [TODO] 다른 방법 찾아보기
+        to.set(key, eval("from[key]"));
     });
     return to;
 }
@@ -18,6 +26,10 @@ function entityToDTO<F extends EntityInterface, T extends DTOInteface>(from: F, 
 
 function entityListToDTOList<F extends EntityInterface[], T extends DTOInteface>(from: F, to: T): T[] {
     return from.map((entity: EntityInterface) => ({...entityToDTO(entity, to)}));
+}
+
+function getterEntityListToDTOList<F extends EntityGetterInterface[], T extends DTOInteface>(from: F, to: T): T[] {
+    return from.map((entity: EntityGetterInterface) => entity.get<T>(to));
 }
 
 const getCurrentDate = (): string => {
@@ -57,7 +69,9 @@ const getH24MISS = (date: Date): string => {
 
 export {
     dtoToEntity,
+    dtoToSetterEntity,
     entityToDTO,
+    entityListToDTOList,
+    getterEntityListToDTOList,
     getCurrentDate,
-    entityListToDTOList
 };

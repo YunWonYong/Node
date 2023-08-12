@@ -3,7 +3,7 @@ import ProjectController from "./controller";
 import ProjectService from "./service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ProjectEntity } from "./entities/project";
-import { ProjectCategoryEntity } from "./entities/projectCategory";
+import { ProjectCategoryEntity } from "../project_category/entities/projectCategory";
 @Module({
     imports: [
         TypeOrmModule.forFeature([

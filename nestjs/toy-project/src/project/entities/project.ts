@@ -1,5 +1,5 @@
 import { Column, Entity, OneToOne, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
-import { ProjectCategoryEntity } from "./projectCategory";
+import { ProjectCategoryEntity } from "../../project_category/entities/projectCategory";
 
 @Entity("project")
 export class ProjectEntity {

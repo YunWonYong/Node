@@ -6,3 +6,9 @@ export type RegistResultType<T> = {
 export type ModifyResultType<T> = {
     affected: number
 } & RegistResultType<T>;
+
+
+export type ListResult = {
+    list: any[],
+    total: number
+};

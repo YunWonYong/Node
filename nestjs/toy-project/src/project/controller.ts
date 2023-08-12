@@ -1,7 +1,6 @@
 import ProjectService from "./service";
 import { Param, Body } from "@nestjs/common";
 import { ControllerSwg, GetSwg } from "../decorators/swagger";
-import { ProjectCategoryDTO } from "./dto/ProjectCategoryDTO";
 import { PostSwg } from "src/decorators/swagger/post";
 import { ProjectRegistDTO } from "./dto/ProjectRegistDTO";
 
@@ -35,53 +34,6 @@ class ProjectController {
             result: this.service.regist(dto)
         };
     }
-    
-    @GetSwg({
-        path: "category",
-        swagger: {
-            summary: "프로젝트 카테고리 목록 조회",
-            desc: "생성된 프로젝트 카테고리 전체 조회"
-        }
-    })
-    async categoryList() {
-        return await this.service.categoryList();
-    }
-
-    @PostSwg({
-        path: "category",
-        swagger: {
-            summary: "프로젝트 카테고리 목록 추가",
-            desc: "카테고리 코드는 중복 X"
-        },
-        responseList: [
-            {
-                status: 201,
-                description: "카테고리 코드를 생성한 결과",
-                schema: {
-                    example: {
-                        result: "success or fail"
-                    }
-                }
-            },
-            {
-                status: 403,
-                description: "카테고리 코드를 생성 시도 시 중복된 코드 사용",
-                schema: {
-                    example: {
-                        message: "100 duplicate",
-                        error: "Forbidden",
-                        statusCode: 403
-                    }
-                }
-            }
-        ]
-    })
-    async categoryRegist(@Body() categoryDTO: ProjectCategoryDTO) {
-        return {
-            result: await this.service.categoryRegist(categoryDTO)
-        };
-    }
-
     @GetSwg({
         path: ":start/:end",
         swagger: {

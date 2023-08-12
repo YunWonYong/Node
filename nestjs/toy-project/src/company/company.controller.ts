@@ -1,6 +1,6 @@
 import { Body, Param } from "@nestjs/common";
 import { ControllerSwg, GetSwg, PostSwg, PutSwg } from "src/decorators/swagger";
-import CompanyService from "./service";
+import CompanyService from "./company.service";
 import { CompanyRegistDTO, CompanyReadDTO, CompanyModifyDTO, CompanyListDTO } from "./dto";
 
 @ControllerSwg("company")

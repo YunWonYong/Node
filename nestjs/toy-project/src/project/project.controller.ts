@@ -1,4 +1,4 @@
-import ProjectService from "./service";
+import ProjectService from "./project.service";
 import { Param, Body } from "@nestjs/common";
 import { ControllerSwg, GetSwg } from "../decorators/swagger";
 import { PostSwg } from "src/decorators/swagger/post";

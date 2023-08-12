@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { CompanyEntity } from "./entities/company";
 import { Repository } from "typeorm";
 import { dtoToEntity, getCurrentDate, entityListToDTOList, entityToDTO } from "src/common/util";
-import { ModifyResultType, RegistResultType } from "src/common/types";
+import { ListResult, ModifyResultType, RegistResultType } from "src/common/types";
 import { CompanyRegistDTO, CompanyReadDTO, CompanyModifyDTO, CompanyListDTO } from "./dto";
 
 @Injectable()
@@ -12,16 +12,19 @@ class CompanyService {
     @InjectRepository(CompanyEntity)
     private readonly repository: Repository<CompanyEntity>;
 
-    public list(): Promise<CompanyListDTO[]> {
+    public list(): Promise<ListResult<CompanyListDTO>> {
         return new Promise((resolve, reject) => {
             this.repository
-                .find()
-                .then((result: CompanyEntity[]) => {
+                .findAndCount()
+                .then(([list, total]) => {
                     const copyDTO = new CompanyListDTO();
                     copyDTO.companyLogo = "";
                     copyDTO.companyName = "";
                     copyDTO.companyNo = 0;
-                    resolve(entityListToDTOList(result, copyDTO));
+                    resolve({
+                        list: entityListToDTOList(list, copyDTO),
+                        total
+                    });
                 }).catch(reject);
         });
     }

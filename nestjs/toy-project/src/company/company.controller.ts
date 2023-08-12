@@ -2,6 +2,7 @@ import { Body, Param } from "@nestjs/common";
 import { ControllerSwg, GetSwg, PostSwg, PutSwg } from "src/decorators/swagger";
 import CompanyService from "./company.service";
 import { CompanyRegistDTO, CompanyReadDTO, CompanyModifyDTO, CompanyListDTO } from "./dto";
+import { ListResult, ModifyResultType, RegistResultType } from "src/common/types";
 
 @ControllerSwg("company")
 class CompanyController {
@@ -15,13 +16,28 @@ class CompanyController {
         responseList: [
             {
                 status:200,
-                type: CompanyListDTO,
-                isArray: true
+                schema: {
+                    example: {
+                        list: [
+                            {
+                                companyLogo: "https://s3-endpoint/images/company/playlinks/logo.png",
+                                companyName: "PLAYLINKS",
+                                companyNo: 5
+                            },
+                            {
+                                companyLogo: "https://s3-endpoint/images/company/playlinks2/logo.png",
+                                companyName: "playlinks2",
+                                companyNo: 7
+                            }
+                        ],
+                        total: 2
+                    }
+                }
             }
         ]
     })
-    async list() {
-        return this.service.list();
+    async list(): Promise<ListResult<CompanyListDTO>> {
+        return await this.service.list();
     }
 
     @PostSwg({
@@ -41,7 +57,7 @@ class CompanyController {
             }
         ]
     })
-    async regist(@Body() dto: CompanyRegistDTO) {
+    async regist(@Body() dto: CompanyRegistDTO): Promise<RegistResultType<number>> {
         return await this.service.regist(dto);
     }
 
@@ -68,7 +84,7 @@ class CompanyController {
             }
         ]
     })
-    async read(@Param("company_no") companyNo: number) {
+    async read(@Param("company_no") companyNo: number): Promise<CompanyReadDTO> {
         return await this.service.findOne(companyNo);
     }
 
@@ -101,7 +117,7 @@ class CompanyController {
             }
         ]
     })
-    async update(@Param("company_no") companyNo: number, @Body() dto: CompanyModifyDTO) {
+    async update(@Param("company_no") companyNo: number, @Body() dto: CompanyModifyDTO): Promise<ModifyResultType<number>> {
         return await this.service.modify(companyNo, dto);
     }
 }

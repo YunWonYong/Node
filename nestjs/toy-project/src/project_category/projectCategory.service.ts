@@ -3,7 +3,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { ProjectCategoryEntity } from "./entities/projectCategory";
 import { ListResult } from "src/common/types";
-import { ProjectCategoryDTO } from "./dto/ProjectCategoryDTO";
+import { ProjectCategoryListDTO, ProjectCategoryRegistDTO } from "./dto";
+import { dtoToEntity, entityListToDTOList } from "src/common/util";
 
 @Injectable()
 class ProjectCategoryService {
@@ -11,14 +12,17 @@ class ProjectCategoryService {
     @InjectRepository(ProjectCategoryEntity)
     private readonly repository: Repository<ProjectCategoryEntity>;
 
-    public list(): Promise<ListResult> {
+    public list(): Promise<ListResult<ProjectCategoryListDTO>> {
         return new Promise((resolve, rejects) => {
             this.repository
             .findAndCount()
             .then((result: [ProjectCategoryEntity[], number] ) => {
                 const [list, total] = result;
+                const listDTO = new ProjectCategoryListDTO();
+                listDTO.categoryCode = 0;
+                listDTO.categoryName = "";
                 resolve({
-                    list,
+                    list: entityListToDTOList(list, listDTO),
                     total
                 });
             })
@@ -26,18 +30,15 @@ class ProjectCategoryService {
         });
     }
     
-    public regist(categoryDTO: ProjectCategoryDTO): Promise<string> {
-        const entity = new ProjectCategoryEntity();
-        entity.categoryCode = categoryDTO.categoryCode;
-        entity.categoryName = categoryDTO.categoryName;
-        entity.registUser = categoryDTO.registUser;
+    public regist(dto: ProjectCategoryRegistDTO): Promise<string> {
         return new Promise((resolve, reject) => {
-            this.codeDuplicateCheck(categoryDTO.categoryCode)
+            this.codeDuplicateCheck(dto.categoryCode)
                 .then(() => {
+                    const entity = dtoToEntity(dto, new ProjectCategoryEntity());          
                     this.repository
                         .save(entity)
                         .then((result) => {
-                            resolve(result.categoryCode === categoryDTO.categoryCode? "success": "fail");
+                            resolve(result.categoryCode === dto.categoryCode? "success": "fail");
                         })
                         .catch(reject);
                 })

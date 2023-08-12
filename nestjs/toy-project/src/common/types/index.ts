@@ -1,3 +1,5 @@
+import { DTOInteface } from "../interface";
+
 export type RegistResultType<T> = {
     result: string,
     pk: T
@@ -8,7 +10,7 @@ export type ModifyResultType<T> = {
 } & RegistResultType<T>;
 
 
-export type ListResult = {
-    list: any[],
+export type ListResult<T extends DTOInteface> = {
+    list: T[],
     total: number
 };

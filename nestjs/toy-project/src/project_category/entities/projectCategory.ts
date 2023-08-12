@@ -1,7 +1,8 @@
+import { EntityInterface } from "src/common/interface";
 import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity("project_category")
-export class ProjectCategoryEntity {
+export class ProjectCategoryEntity implements EntityInterface {
     @PrimaryColumn()
     categoryCode: number;
     

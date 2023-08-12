@@ -28,8 +28,8 @@ function entityListToDTOList<F extends EntityInterface[], T extends DTOInteface>
     return from.map((entity: EntityInterface) => ({...entityToDTO(entity, to)}));
 }
 
-function getterEntityListToDTOList<F extends EntityGetterInterface[], T extends DTOInteface>(from: F, to: T): T[] {
-    return from.map((entity: EntityGetterInterface) => entity.get<T>(to));
+function getterEntityListToDTOList<F extends EntityGetterInterface[], T extends DTOInteface>(from: F, to: { new(): T }): T[] {
+    return from.map((entity: EntityGetterInterface) => entity.get<T>(new to()));
 }
 
 const getCurrentDate = (): string => {

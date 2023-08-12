@@ -23,7 +23,7 @@ class ProjectService {
                 .getMany()
                 .then((list) => {
                     resolve({
-                        list: getterEntityListToDTOList(list, new ProjectListDTO()),
+                        list: getterEntityListToDTOList<ProjectEntity[], ProjectListDTO>(list, ProjectListDTO),
                         total: list.length
                     });
                 })

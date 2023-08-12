@@ -64,23 +64,17 @@ export class ProjectEntity implements EntitySetterInterface, EntityGetterInterfa
     }
 
     get<T>(dto: T): T {
+        /* eslint-disable @typescript-eslint/no-unused-vars */
+        Object.keys(dto as object).forEach(key => {
+            eval("dto[key] = this[key]");
+        });
+
         if (dto instanceof ProjectListDTO) {
             dto.categoryName = this.category.categoryName;
             dto.companyName = this.company.companyName;
             dto.companyLogo = this.company.companyLogo;
         }
 
-        /* eslint-disable @typescript-eslint/no-unused-vars */
-        Object.keys(dto as object).forEach(key => {
-            const value = eval("this[key]");
-            if (value === undefined) {
-                return;
-            } 
-            eval("dto[key] = this[key]");
-        })
-
-        return {
-            ...dto
-        };
+        return dto;
     }
 }

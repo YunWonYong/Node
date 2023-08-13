@@ -7,6 +7,7 @@ import { ListResult, RegistResultType } from "src/common/types";
 import { dtoToSetterEntity, getterEntityListToDTOList } from "src/common/util";
 import { CompanyEntity } from "src/company/entities/company";
 import { ProjectCategoryEntity } from "src/project_category/entities/projectCategory";
+import { ProjectImgEntity } from "src/project_img/entities/projectImg";
 
 @Injectable()
 class ProjectService {
@@ -20,6 +21,7 @@ class ProjectService {
                 .createQueryBuilder("p")
                 .innerJoinAndSelect("p.category", "pc", "p.category_code = pc.category_code", ProjectCategoryEntity)
                 .innerJoinAndSelect("p.company", "c", "p.company_no = c.company_no", CompanyEntity)
+                .leftJoinAndSelect("p.imgs", "pi", "p.no = pi.no", ProjectImgEntity)
                 .getMany()
                 .then((list) => {
                     resolve({

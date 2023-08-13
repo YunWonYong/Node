@@ -45,7 +45,6 @@ class ProjectImgService {
                 }));
 
                 const result = await queryRunner.commitTransaction();
-                console.log(result);
                 resolve({
                     result: "success",
                     pk: pks
@@ -64,7 +63,6 @@ class ProjectImgService {
             connect
             .query("SELECT  1  FROM project WHERE no = $1;", [projectNo])
             .then((result: object[]) => {
-                console.log(result);
                 resolve(result.length === 1);
             })
             .catch(reject);

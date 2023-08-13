@@ -24,6 +24,9 @@ export class ProjectEntity implements EntitySetterInterface, EntityGetterInterfa
     company: CompanyEntity;
 
     @OneToMany(() => ProjectImgEntity, imgs => imgs.no)
+    @JoinColumn({
+        name: "no"
+    })
     imgs: ProjectImgEntity[];
 
     @Column()
@@ -77,6 +80,9 @@ export class ProjectEntity implements EntitySetterInterface, EntityGetterInterfa
             dto.categoryName = this.category.categoryName;
             dto.companyName = this.company.companyName;
             dto.companyLogo = this.company.companyLogo;
+            if (this.imgs[0]) {
+                dto.img = this.imgs[0].url;
+            }
         }
 
         return dto;

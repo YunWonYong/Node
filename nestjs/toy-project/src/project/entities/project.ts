@@ -1,8 +1,9 @@
-import { Column, Entity, OneToOne, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, OneToMany , JoinColumn, PrimaryGeneratedColumn } from "typeorm";
 import { ProjectCategoryEntity } from "../../project_category/entities/projectCategory";
 import { CompanyEntity } from "src/company/entities/company";
 import { EntityGetterInterface, EntitySetterInterface } from "src/common/interface";
 import { ProjectListDTO } from "../dto";
+import { ProjectImgEntity } from "src/project_img/entities/projectImg";
 
 @Entity("project")
 export class ProjectEntity implements EntitySetterInterface, EntityGetterInterface {
@@ -21,6 +22,9 @@ export class ProjectEntity implements EntitySetterInterface, EntityGetterInterfa
         name: "company_no"
     })
     company: CompanyEntity;
+
+    @OneToMany(() => ProjectImgEntity, imgs => imgs.no)
+    imgs: ProjectImgEntity[];
 
     @Column()
     name: string;

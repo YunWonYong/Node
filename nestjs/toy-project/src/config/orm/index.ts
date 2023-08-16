@@ -24,7 +24,8 @@ const ORMConfig = () => {
         synchronize,
         database,
         entities,
-        logging: true
+        logging: true,
+        autoLoadEntities: true // datasource
     };
     return {
         orm

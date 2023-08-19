@@ -15,6 +15,10 @@ import { ProjectEntity } from "./entities/project";
     ],
     providers: [
         ProjectService
+    ],
+    exports: [
+        ProjectService,
+        TypeOrmModule
     ]
 })
 export default class ProjectModule {}

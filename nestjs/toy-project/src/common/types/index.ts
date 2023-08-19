@@ -1,5 +1,9 @@
 import { DTOInteface } from "../interface";
 
+export type ObjectType<T> = {
+    [key in string]: T;
+};
+
 export type RegistResultType<T> = {
     result: string,
     pk: T

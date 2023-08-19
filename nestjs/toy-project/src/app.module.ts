@@ -5,6 +5,7 @@ import ORMModule from "./common/orm";
 import CompanyModule from "./company/company.module";
 import ProjectCategoryModule from "./project_category/projectCategory.module";
 import ProjectImgModule from "./project_img/projectImg.module";
+import ProjectReplyModule from "./project_reply/projectReply.module";
 
 @Module({
     imports: [
@@ -12,8 +13,9 @@ import ProjectImgModule from "./project_img/projectImg.module";
         ProjectModule,
         ProjectCategoryModule,
         ProjectImgModule,
+        ProjectReplyModule,
         CompanyModule,
         ORMModule,
-    ],
+    ]
 })
 export class AppModule {}

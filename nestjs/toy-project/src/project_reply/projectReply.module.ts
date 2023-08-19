@@ -1,28 +1,28 @@
 import { Module } from "@nestjs/common";
-import ProjectImgService from "./projectImg.service";
+import ProjectReplyController from "./projectReply.controller";
+import ProjectReplyService from "./projectReply.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { ProjectImgEntity } from "./entities/projectImg";
-import ProjectImgController from "./projectImg.controller";
+import { ProjectReplyEntity } from "./entities/projectReply";
+import { ProjectEntity } from "src/project/entities/project";
 import ProjectService from "src/project/project.service";
 import ProjectModule from "src/project/project.module";
-import { ProjectEntity } from "src/project/entities/project";
 import TransactionService from "src/common/orm/transection";
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([
-            ProjectImgEntity,
+            ProjectReplyEntity,
             ProjectEntity
         ]),
         ProjectModule
     ],
     controllers: [
-        ProjectImgController
+        ProjectReplyController
     ],
     providers: [
-        ProjectImgService,
+        ProjectReplyService,
         ProjectService,
         TransactionService
     ]
 })
-export default class ProjectImgModule{}
+export default class ProjectReplyModule{}

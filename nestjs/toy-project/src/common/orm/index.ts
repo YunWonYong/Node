@@ -16,7 +16,7 @@ const ormModule = getORMModule();
 
 @Module({
     imports: [
-        ormModule
+        ormModule,
     ],
     exports: [
         ormModule

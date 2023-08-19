@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { QueryRunner } from "typeorm";
 import { ProjectEntity } from "./entities/project";
 import { ProjectListDTO, ProjectRegistDTO } from "./dto";
 import { ListResult, RegistResultType } from "src/common/types";
@@ -60,6 +61,21 @@ class ProjectService {
     public find(projectID: number): Promise<any> {
         return new Promise((resolve) => {
             resolve(projectID);
+        });
+    }
+
+    public projectNoCheck(projectNo: number, connect: QueryRunner): Promise<void> {
+        return new Promise((resolve, reject) => {
+            connect
+            .query("SELECT  1  FROM project WHERE no = $1;", [projectNo])
+            .then((result: object[]) => {
+                if (result.length === 1) {
+                    resolve();
+                    return;
+                }
+                reject(new NotFoundException(`${projectNo} not found project number`));
+            })
+            .catch(reject);
         });
     }
 }

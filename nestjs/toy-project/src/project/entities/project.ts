@@ -4,6 +4,9 @@ import { CompanyEntity } from "src/company/entities/company";
 import { EntityGetterInterface, EntitySetterInterface } from "src/common/interface";
 import { ProjectListDTO } from "../dto";
 import { ProjectImgEntity } from "src/project_img/entities/projectImg";
+import { ProjectReplyEntity } from "src/project_reply/entities/projectReply";
+import ProjectReadDTO from "../dto/ProjectReadDTO";
+import ProjectReplyReadDTO from "src/project_reply/dto/ProjectReplyReadDTO";
 
 @Entity("project")
 export class ProjectEntity implements EntitySetterInterface, EntityGetterInterface {
@@ -28,6 +31,9 @@ export class ProjectEntity implements EntitySetterInterface, EntityGetterInterfa
         name: "no"
     })
     imgs: ProjectImgEntity[];
+
+    @OneToMany(() => ProjectReplyEntity, replys => replys.no)
+    replys: ProjectReplyEntity[];
 
     @Column()
     name: string;
@@ -83,6 +89,19 @@ export class ProjectEntity implements EntitySetterInterface, EntityGetterInterfa
             if (this.imgs[0]) {
                 dto.img = this.imgs[0].url;
             }
+        } else if (dto instanceof ProjectReadDTO) {
+            dto.imgs = this.imgs.map(img => img.url);
+            dto.replys = this.replys.map(reply => {
+                const replyReadDTO = new ProjectReplyReadDTO();
+                replyReadDTO.replyNo = reply.replyNo;
+                replyReadDTO.content = reply.content;
+                replyReadDTO.likeCnt = reply.like_cnt;
+                replyReadDTO.hateCnt = reply.hate_cnt;
+                replyReadDTO.parent = reply.parent;
+                replyReadDTO.registUser = reply.registUser;
+                replyReadDTO.registDate = reply.registDate;
+                return replyReadDTO;
+            });
         }
 
         return dto;

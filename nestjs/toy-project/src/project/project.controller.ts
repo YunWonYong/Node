@@ -46,14 +46,14 @@ class ProjectController {
     }
 
     @GetSwg({
-        path: ":projectID",
+        path: ":projectNo",
         swagger: {
             summary: "프로젝트를 상세 조회",
-            desc: "projectID에 해당하는 project 관련된 모든 정보 조회"
+            desc: "projectNo 해당하는 project 관련된 모든 정보 조회"
         }
     })
-    async find(@Param("projectID") projectID: number) {
-        return this.service.find(projectID); 
+    async find(@Param("projectNo") no: number) {
+        return await this.service.find(no); 
     }
 }
 

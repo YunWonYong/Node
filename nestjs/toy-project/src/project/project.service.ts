@@ -9,6 +9,8 @@ import { dtoToSetterEntity, getterEntityListToDTOList } from "src/common/util";
 import { CompanyEntity } from "src/company/entities/company";
 import { ProjectCategoryEntity } from "src/project_category/entities/projectCategory";
 import { ProjectImgEntity } from "src/project_img/entities/projectImg";
+import { ProjectReplyEntity } from "src/project_reply/entities/projectReply";
+import ProjectReadDTO from "./dto/ProjectReadDTO";
 
 @Injectable()
 class ProjectService {
@@ -58,9 +60,23 @@ class ProjectService {
         });
     }
 
-    public find(projectID: number): Promise<any> {
-        return new Promise((resolve) => {
-            resolve(projectID);
+    public find(no: number): Promise<ProjectReadDTO> {
+        return new Promise((resolve, reject) => {
+            this.repository
+                .createQueryBuilder("p")
+                .where({
+                    no
+                })
+                .innerJoinAndSelect("p.category", "pc", "p.category_code = pc.category_code", ProjectCategoryEntity)
+                .innerJoinAndSelect("p.company", "c", "p.company_no = c.company_no", CompanyEntity)
+                .leftJoinAndSelect("p.imgs", "pi", "p.no = pi.no", ProjectImgEntity)
+                .leftJoinAndSelect("p.replys", "pr", "p.no = pr.no", ProjectReplyEntity)
+                .orderBy("CASE WHEN pr.parent IS NOT NULL THEN pr.parent ELSE pr.reply_no END", "ASC")
+                .getMany()
+                .then((list) => {
+                    resolve(getterEntityListToDTOList<ProjectEntity[], ProjectReadDTO>(list, ProjectReadDTO)[0]);
+                })
+                .catch(reject)
         });
     }
 

@@ -72,6 +72,7 @@ class ProjectService {
                 .leftJoinAndSelect("p.imgs", "pi", "p.no = pi.no", ProjectImgEntity)
                 .leftJoinAndSelect("p.replys", "pr", "p.no = pr.no", ProjectReplyEntity)
                 .orderBy("CASE WHEN pr.parent IS NOT NULL THEN pr.parent ELSE pr.reply_no END", "ASC")
+                .addOrderBy("pr.no", "ASC")
                 .getMany()
                 .then((list) => {
                     resolve(getterEntityListToDTOList<ProjectEntity[], ProjectReadDTO>(list, ProjectReadDTO)[0]);

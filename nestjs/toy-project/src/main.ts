@@ -13,10 +13,6 @@ import SwaggerDocumentBuilder from "./common/swagger";
     const swaggerConfig = config.getSwaggerConfig();
 
     new SwaggerDocumentBuilder(swaggerConfig).build(nestFactory, appConfig.env);
-    nestFactory.enableCors({
-        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-        origin: true,
-        credentials: true
-    });
+    nestFactory.enableCors();
     await nestFactory.listen(appConfig.port);
 })();
